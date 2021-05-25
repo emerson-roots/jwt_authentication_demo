@@ -18,11 +18,20 @@ public class UsuarioService {
 	public Usuario buscar(Long id) {
 
 		Optional<Usuario> obj = usrRepo.findById(id);
-		
+
 		// tratamento de excessao - caso faça busca no repositório e retorne nulo e
 		// LANÇA EXCESSAO personalizada para a camada de recurso
 		return obj.orElseThrow(() -> new ObjectNotFoundExceptionPersonalizado(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));
+	}
+
+	public Usuario insert(Usuario obj) {
+		
+		// garante que o novo objeto a ser inserido tem id nulo, caso contrario entende
+		// como uma atualização
+		obj.setId(null);
+
+		return usrRepo.save(obj);
 	}
 
 }
