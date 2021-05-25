@@ -12,7 +12,7 @@ public class ResourceExceptionHandlerPersonalizado {
 
 	//padrao do da anotação @ControllerAdvice
 	@ExceptionHandler(ObjectNotFoundExceptionPersonalizado.class)
-	public ResponseEntity<StandardErrorPersonalizado> objectNotFoundEmerson(ObjectNotFoundExceptionPersonalizado pNotFound, HttpServletRequest pRequest){
+	public ResponseEntity<StandardErrorPersonalizado> objectNotFoundPersonalizado(ObjectNotFoundExceptionPersonalizado pNotFound, HttpServletRequest pRequest){
 
 		//instancia novo erro padrao (objeto nao encontrado) 
 		StandardErrorPersonalizado err = new StandardErrorPersonalizado(HttpStatus.NOT_FOUND.value(), pNotFound.getMessage(), System.currentTimeMillis());

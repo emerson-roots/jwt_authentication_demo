@@ -15,7 +15,7 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usrRepo;
 
-	public Usuario buscar(Long id) {
+	public Usuario find(Long id) {
 
 		Optional<Usuario> obj = usrRepo.findById(id);
 
@@ -31,6 +31,12 @@ public class UsuarioService {
 		// como uma atualização
 		obj.setId(null);
 
+		return usrRepo.save(obj);
+	}
+	
+	public Usuario update(Usuario obj) {
+		//chama o metodo de busca para verificar se o id existe
+		find(obj.getId());
 		return usrRepo.save(obj);
 	}
 

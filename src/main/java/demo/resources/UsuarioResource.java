@@ -22,9 +22,9 @@ public class UsuarioResource {
 	private UsuarioService usuarioService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Long id) {
+	public ResponseEntity<Usuario> find(@PathVariable Long id) {
 
-		Usuario obj = usuarioService.buscar(id);
+		Usuario obj = usuarioService.find(id);
 
 		return ResponseEntity.ok().body(obj);
 
@@ -38,6 +38,13 @@ public class UsuarioResource {
 				path("/{id}").buildAndExpand(obj.getId()).toUri();//URI do java.net
 
 		return ResponseEntity.created(uri).build();
-
 	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Usuario obj, @PathVariable Long id) {
+		obj.setId(id);
+		obj = usuarioService.update(obj);
+		return ResponseEntity.noContent().build();
+	}
+	
 }
