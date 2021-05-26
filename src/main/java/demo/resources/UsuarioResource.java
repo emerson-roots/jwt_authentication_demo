@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import demo.domain.Usuario;
 import demo.domain.dto.UsuarioDTO;
+import demo.domain.dto.UsuarioNewDTO;
 import demo.services.UsuarioService;
 
 @RestController
@@ -34,8 +37,9 @@ public class UsuarioResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Usuario obj){//@RequestBody faz o Json ser convertido para o objeto java automaticamente
-
+	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioNewDTO objNewDto){//@RequestBody faz o Json ser convertido para o objeto java automaticamente
+		
+		Usuario obj = usuarioService.fromDTO(objNewDto);
 		obj = usuarioService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
 				path("/{id}").buildAndExpand(obj.getId()).toUri();//URI do java.net
@@ -44,7 +48,9 @@ public class UsuarioResource {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Usuario obj, @PathVariable Long id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioNewDTO objNewDto, @PathVariable Long id) {
+		
+		Usuario obj = usuarioService.fromDTO(objNewDto);
 		obj.setId(id);
 		obj = usuarioService.update(obj);
 		return ResponseEntity.noContent().build();

@@ -8,6 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import demo.domain.Usuario;
+import demo.domain.dto.UsuarioDTO;
+import demo.domain.dto.UsuarioNewDTO;
 import demo.exceptions.DataIntegrityExceptionPersonalizado;
 import demo.exceptions.ObjectNotFoundExceptionPersonalizado;
 import demo.repositories.UsuarioRepository;
@@ -56,6 +58,15 @@ public class UsuarioService {
 	
 	public List<Usuario> findAll(){
 		return usrRepo.findAll();
+	}
+	
+	public Usuario fromDTO(UsuarioDTO objDto) {
+		return new Usuario(objDto.getId(), objDto.getNome(), null, null);
+	}
+	
+	//usado para novos Usuarios
+	public Usuario fromDTO(UsuarioNewDTO objNewDto) {
+		return new Usuario(null, objNewDto.getNome(), objNewDto.getEmail(), objNewDto.getSenha());
 	}
 
 }
