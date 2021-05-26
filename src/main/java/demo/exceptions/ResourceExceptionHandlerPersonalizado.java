@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -28,5 +30,19 @@ public class ResourceExceptionHandlerPersonalizado {
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
+	
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<StandardErrorPersonalizado> validationPersonalizado(MethodArgumentNotValidException e,
+			HttpServletRequest pRequest) {
 
+		ValidationErrorPersonalizado err = new ValidationErrorPersonalizado(HttpStatus.BAD_REQUEST.value(), "Erro de validacao de campos",
+				System.currentTimeMillis());
+
+		//percorre cada erro adicionando ao metodo personalizado addError
+		for (FieldError x : e.getBindingResult().getFieldErrors()) {
+			err.addError(x.getField(), x.getDefaultMessage());
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 }
