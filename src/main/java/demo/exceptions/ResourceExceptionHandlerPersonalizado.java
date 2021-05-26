@@ -18,5 +18,15 @@ public class ResourceExceptionHandlerPersonalizado {
 		StandardErrorPersonalizado err = new StandardErrorPersonalizado(HttpStatus.NOT_FOUND.value(), pNotFound.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
+	
+	@ExceptionHandler(DataIntegrityExceptionPersonalizado.class)
+	public ResponseEntity<StandardErrorPersonalizado> dataIntegrityPersonalizado(DataIntegrityExceptionPersonalizado pNotFound,
+			HttpServletRequest pRequest) {
+
+		StandardErrorPersonalizado err = new StandardErrorPersonalizado(HttpStatus.BAD_REQUEST.value(), pNotFound.getMessage(),
+				System.currentTimeMillis());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 
 }

@@ -3,9 +3,11 @@ package demo.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import demo.domain.Usuario;
+import demo.exceptions.DataIntegrityExceptionPersonalizado;
 import demo.exceptions.ObjectNotFoundExceptionPersonalizado;
 import demo.repositories.UsuarioRepository;
 
@@ -38,6 +40,17 @@ public class UsuarioService {
 		//chama o metodo de busca para verificar se o id existe
 		find(obj.getId());
 		return usrRepo.save(obj);
+	}
+	
+	public void delete(Long id) {
+		
+		find(id);
+		
+		try {
+			usrRepo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityExceptionPersonalizado("Não é possível excluir uma Usuario que possui outras tabelas relacionados a ele");
+		}
 	}
 
 }
