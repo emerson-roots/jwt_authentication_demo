@@ -1,5 +1,6 @@
 package demo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,10 @@ public class UsuarioService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityExceptionPersonalizado("Não é possível excluir uma Usuario que possui outras tabelas relacionados a ele");
 		}
+	}
+	
+	public List<Usuario> findAll(){
+		return usrRepo.findAll();
 	}
 
 }
