@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import demo.domain.Usuario;
@@ -19,6 +20,9 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usrRepo;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public Usuario find(Long id) {
 
@@ -66,7 +70,7 @@ public class UsuarioService {
 	
 	//usado para novos Usuarios
 	public Usuario fromDTO(UsuarioNewDTO objNewDto) {
-		return new Usuario(null, objNewDto.getNome(), objNewDto.getEmail(), objNewDto.getSenha());
+		return new Usuario(null, objNewDto.getNome(), objNewDto.getEmail(), passwordEncoder.encode(objNewDto.getSenha()));
 	}
 
 }
