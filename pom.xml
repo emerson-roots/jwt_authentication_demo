@@ -50,6 +50,19 @@
 			<version>6.1.5.Final</version>
 		</dependency>
 		
+		
+		<!-- dependencias necessarias para o JWT (Json Web Tokens) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.7.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
