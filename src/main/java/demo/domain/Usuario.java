@@ -1,11 +1,20 @@
 package demo.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import demo.domain.enums.Perfil;
 
 @Entity
 public class Usuario {
@@ -19,15 +28,26 @@ public class Usuario {
 	@JsonIgnore
 	private String senha;
 	
+	@ElementCollection(fetch=FetchType.EAGER) 
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
+	
 	public Usuario(Long id, String nome, String email, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
+		
+		// adotado a regra de negócio em que
+		// todo novo Usuario tera o perfil de CONVIDADO
+		addPerfil(Perfil.CONVIDADO);
 	}
 
 	public Usuario() {
+		// adotado a regra de negócio em que
+		// todo novo Usuario tera o perfil de CONVIDADO
+		addPerfil(Perfil.CONVIDADO);
 	}
 	
 	public Long getId() {
@@ -59,6 +79,14 @@ public class Usuario {
 	
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public Set<Perfil> getPerfis(){
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 	
 	@Override

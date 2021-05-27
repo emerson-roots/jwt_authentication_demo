@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import demo.domain.Usuario;
+import demo.domain.enums.Perfil;
 import demo.repositories.UsuarioRepository;
 
 @Service
@@ -22,6 +23,7 @@ public class DBService {
 	public void instantiateTestDatabase() throws ParseException {
 		
 		Usuario usr1 = new Usuario(null, "Emerson", "emerson@emerson", passwordEncoder.encode("123"));
+		usr1.addPerfil(Perfil.ADMIN);
 		Usuario usr2 = new Usuario(null, "Jurema", "jurema@jurema", passwordEncoder.encode("321"));
 		Usuario usr3 = new Usuario(null, "Skarlath", "skarlath@skarlath", passwordEncoder.encode("789"));
 
