@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import demo.security.JWTAuthenticationFilter;
+import demo.security.JWTAuthorizationFilter;
 import demo.security.JWTUtil;
 
 /**
@@ -67,7 +68,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.PUT, PUBLIC_MATCHERS_POST_AND_PUT).permitAll()
 				.antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
 		
+		// adiciona filtro de AUTENTICAÇAO
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		
+		// adiciona filtro de AUTORIZAÇAO
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 
 		// define que a aplicação é STATELESS - assegura que nosso back end nao cria
 		// sessão de usuário
