@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 import demo.domain.Usuario;
 import demo.domain.dto.UsuarioDTO;
 import demo.domain.dto.UsuarioNewDTO;
+import demo.domain.enums.Perfil;
+import demo.exceptions.AuthorizationExceptionPersonalizado;
 import demo.exceptions.DataIntegrityExceptionPersonalizado;
 import demo.exceptions.ObjectNotFoundExceptionPersonalizado;
 import demo.repositories.UsuarioRepository;
+import demo.security.UserSS;
 
 @Service
 public class UsuarioService {
@@ -25,6 +28,15 @@ public class UsuarioService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public Usuario find(Long id) {
+		
+		/*
+		 * verifica se o usuario q tentamos buscar for = null ou se nao tiver perfil de
+		 * admin ou se o id for diferente do buscado
+		 */
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationExceptionPersonalizado("Acesso negado");
+		}
 
 		Optional<Usuario> obj = usrRepo.findById(id);
 

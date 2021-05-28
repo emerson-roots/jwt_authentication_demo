@@ -27,12 +27,7 @@ public class UsuarioResource {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
-	// trabalha em conjunto com a anotação @EnableGlobalMethodSecurity na
-	// classe SecurityConfig
-	// tem a função de dar prioridades de acordo com os perfis de usuário, no caso
-	// perfis de administradores ADMIN
-	@PreAuthorize("hasAnyRole('ADMIN')")
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Usuario> find(@PathVariable Long id) {
 
@@ -53,6 +48,11 @@ public class UsuarioResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	
+	// trabalha em conjunto com a anotação @EnableGlobalMethodSecurity na
+	// classe SecurityConfig
+	// tem a função de dar prioridades de acordo com os perfis de usuário, no caso
+	// perfis de administradores ADMIN
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioNewDTO objNewDto, @PathVariable Long id) {

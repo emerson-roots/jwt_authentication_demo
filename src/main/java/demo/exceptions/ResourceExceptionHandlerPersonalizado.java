@@ -45,4 +45,13 @@ public class ResourceExceptionHandlerPersonalizado {
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
+	
+	@ExceptionHandler(AuthorizationExceptionPersonalizado.class)
+	public ResponseEntity<StandardErrorPersonalizado> authorizationPersonalizado(AuthorizationExceptionPersonalizado pNotFound,
+			HttpServletRequest pRequest) {
+
+		StandardErrorPersonalizado err = new StandardErrorPersonalizado(HttpStatus.FORBIDDEN.value(), pNotFound.getMessage(),
+				System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+	}
 }
