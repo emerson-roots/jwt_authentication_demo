@@ -36,6 +36,9 @@ public class AuthResource {
 
 		// adiciona o token na resposta da requisição
 		response.addHeader("Authorization", "Bearer " + token);
+		
+		// expõe o header Authorization no cabeçalho da requisição
+		response.addHeader("access-control-expose-headers", "Authorization");
 
 		return ResponseEntity.noContent().build();
 	}
