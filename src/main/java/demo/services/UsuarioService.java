@@ -76,6 +76,25 @@ public class UsuarioService {
 		return usrRepo.findAll();
 	}
 	
+	public Usuario findByEmail(String email) {
+
+		// identifica o usuário logado/autenticado
+		UserSS user = UserService.authenticated();
+
+		// verifica see é igual a nulo ou nao for administrador e o email que esta
+		// procurando nao for o email do usuario logado
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationExceptionPersonalizado("Acesso negado");
+		}
+
+		Usuario obj = usrRepo.findByEmail(email);
+		if (obj == null) {
+			throw new ObjectNotFoundExceptionPersonalizado(
+					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Usuario.class.getName());
+		}
+		return obj;
+	}
+	
 	public Usuario fromDTO(UsuarioDTO objDto) {
 		return new Usuario(objDto.getId(), objDto.getNome(), null, null);
 	}
